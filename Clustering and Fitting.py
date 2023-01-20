@@ -42,6 +42,21 @@ def norm_df(df, first=0, last=None):
         
     return df
 
+''' read_file is function for data reading World bank data in original dataframe and
+    tranposed dataframe(dataFrame is showing country as column & t_dataFrame is 
+    showing year as a column '''
+
+def read_file(filename):
+    dataFrame = pd.read_csv(filename)
+    value_Name_indicator = dataFrame['Indicator Name'][0]
+    indicator_code = dataFrame['Indicator Code'][0]
+    dataFrame = dataFrame.drop(['Country Code', 'Indicator Name', 'Indicator Code'], axis = 1)
+    Years = list(dataFrame.columns)
+    t_dataFrame = pd.melt(dataFrame, id_vars=['Country Name'], value_vars=Years, var_name='Years', value_name=value_Name_indicator)   
+
+    return dataFrame, t_dataFrame
+
+
 
 # Function to read file
 def readFile(filename):
@@ -198,7 +213,7 @@ plt.title("Population Growth (%)")
 plt.savefig("Annual Population Growth (%).png")  
 plt.show()
 
-''' curve fitting '''    
+''' curve fitting for best model fit'''    
 
 # read file by calling function 
 GDP = readFile("D:/Data Science Semester A/ADS 1/ADS 3 Clustering and Fitting Assignment/API_NY.GDP.MKTP.KD.ZG_DS2_en_csv_v2_4770541.csv")
